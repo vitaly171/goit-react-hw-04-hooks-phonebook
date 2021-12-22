@@ -1,0 +1,16 @@
+.section {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: #fff4dcdb;
+  border: 2px solid rgba(3, 3, 3, 0.089);
+}
+
+.title {
+  padding-top: 10px;
+  font-weight: 600;
+  font-size: 32px;
+  text-align: center;
+  color: #424a80;
+}
