@@ -1,5 +1,5 @@
 {
-  "name": "goit-react-hw-02-phonebook",
+  "name": "goit-react-hw-04-hooks-phonebook",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +13,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-toastify": "^8.1.0",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -26,13 +27,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vitaly171/goit-react-hw-02-phonebook.git"
+    "url": "git+https://github.com/vitaly171/goit-react-hw-04-hooks-phonebook.git"
   },
   "author": "Vitaly Ivlev <vitaly.ivlev5@gmail.com>",
   "bugs": {
-    "url": "https://github.com/vitaly171/goit-react-hw-02-phonebook/issues"
+    "url": "https://github.com/vitaly171/goit-react-hw-04-hooks-phonebook/issues"
   },
-  "homepage": "https://vitaly171.github.io/goit-react-hw-02-phonebook",
+  "homepage": "https://vitaly171.github.io/goit-react-hw-04-hooks-phonebook",
   "eslintConfig": {
     "extends": [
       "react-app",

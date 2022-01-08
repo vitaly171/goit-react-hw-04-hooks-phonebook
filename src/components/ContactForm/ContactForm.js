@@ -1,91 +1,90 @@
-import { Component } from 'react';
-import { v4 as uuid } from 'uuid';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import s from './ContactForm.module.css';
+import PropTypes from 'prop-types';
 
-const INIITAL_STATE = {
-  name: '',
-  number: '',
-};
+function ContactForm({ handelAddContact, isExistContact }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-class ContactForm extends Component {
-  state = INIITAL_STATE;
+  const handleInputForm = event => {
+    const { name, value } = event.target;
 
-  handleInputForm = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
-  };
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
 
-  handleFormSubmit = e => {
-    e.preventDefault();
+      case 'number':
+        setNumber(value);
+        break;
 
-    const { name, number } = this.state;
-    const { onAdd } = this.props;
-
-    const isValidatedForm = this.validateForm();
-
-    if (!isValidatedForm) return;
-
-    onAdd({ id: uuid(), name, number });
-
-    this.resetForm();
-  };
-
-  validateForm = () => {
-    const { name, number } = this.state;
-    const { onCheckContact } = this.props;
-    if (!name || !number) {
-      alert('Some filed is empty');
-      return false;
+      default:
+        toast.error(`There are no type input "${name}"`);
     }
-    return onCheckContact(name);
   };
 
-  resetForm = () => this.setState(INIITAL_STATE);
+  const handleFormSubmit = event => {
+    event.preventDefault();
 
-  render() {
-    const { name, number } = this.state;
-    return (
-      <form className={s.form} onSubmit={this.handleFormSubmit}>
-        <label>
-          <input
-            className={s.input}
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
-            placeholder="Enter name"
-            value={name}
-            onChange={this.handleInputForm}
-          />
-        </label>
-        <label>
-          <input
-            className={s.input}
-            type="tell"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-            required
-            placeholder="Enter phone number"
-            value={number}
-            onChange={this.handleInputForm}
-          />
-        </label>
+    const validateForm = name.trim();
+    if (isExistContact(name)) {
+      return toast.error(`Contact "${validateForm}" is already exists!`);
+    }
 
-        <button className={s.button} type="submit">
-          {' '}
-          Add Contact{' '}
-        </button>
-      </form>
-    );
-  }
+    if (!validateForm) {
+      return toast.error('Please enter contact name');
+    }
+    handelAddContact({ name: validateForm, number, id: uuidv4() });
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setName('');
+    setNumber('');
+  };
+
+  return (
+    <form className={s.form} onSubmit={handleFormSubmit}>
+      <label>
+        <input
+          className={s.input}
+          type="text"
+          name="name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="The name can only consist of letters, apostrophe, dash and spaces. For example, Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan, etc."
+          placeholder="Enter name"
+          value={name}
+          onChange={handleInputForm}
+        />
+      </label>
+      <label>
+        <input
+          className={s.input}
+          type="tell"
+          name="number"
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must contain digits and also can contain : spaces, dashes, parentheses and start with '+' "
+          placeholder="Enter phone number"
+          value={number}
+          onChange={handleInputForm}
+        />
+      </label>
+
+      <button className={s.button} type="submit">
+        {' '}
+        Add Contact{' '}
+      </button>
+    </form>
+  );
 }
 
 ContactForm.propTypes = {
-  onCheckContact: PropTypes.func.isRequired,
-  onAdd: PropTypes.func.isRequired,
+  isExistContact: PropTypes.func.isRequired,
+  handelAddContact: PropTypes.func.isRequired,
 };
 
 export default ContactForm;
+
